@@ -35,7 +35,8 @@ The only thing you need to install is Docker. All of the other dev dependencies 
 1. **Open VSCode**
 
     - Open VSCode in the cloned folder
-    - VSCode will detect the devcontainer definition and ask to reopen in devcontainer, press accept    
+    - VSCode will detect the devcontainer definition and ask to reopen in devcontainer, press accept
+    - Copy the `.env.tmp` file as `.env`  
 
     > The solution comes with a default python module named `filterModule`
 
@@ -45,7 +46,7 @@ The only thing you need to install is Docker. All of the other dev dependencies 
     1. You will see structure of current folder like below:
 
     ```
-        │  .env
+        │  .env.tmp
         │  .gitignore
         │  deployment.debug.template.json
         │  deployment.template.json
