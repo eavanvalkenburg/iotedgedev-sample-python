@@ -1,0 +1,39 @@
+// For format details, see https://aka.ms/vscode-remote/devcontainer.json
+{
+	"name": "IoT Edge Dev",
+	"image": "mcr.microsoft.com/iotedge/iotedgedev:latest",
+	"extensions": [
+		"ms-azuretools.vscode-docker",
+		"vsciot-vscode.azure-iot-edge",
+		"vsciot-vscode.azure-iot-toolkit",
+		"ms-vscode.azurecli",
+		"ms-python.python",
+		"ms-python.vscode-pylance"
+	],
+	"mounts": [
+		"source=/var/run/docker.sock,target=/var/run/docker.sock,type=bind"
+	],
+	"workspaceMount": "source=${localWorkspaceFolder},target=/home/iotedge,type=bind,consistency=cached",
+	"workspaceFolder": "/home/iotedge",
+	"settings": {
+		"remote.extensionKind": {
+			"ms-azuretools.vscode-docker": "workspace",
+			"vsciot-vscode.azure-iot-edge": "workspace",
+			"vsciot-vscode.azure-iot-toolkit": "workspace",
+			"ms-vscode.azurecli": "workspace",
+			"ms-python.python": "workspace",
+			"ms-python.vscode-pylance": "workspace"
+		},
+		"python.linting.pylintEnabled": true,
+		"python.linting.enabled": true,
+		"python.formatting.provider": "black",
+		"python.testing.pytestArgs": [
+			"--no-cov"
+		],
+		"editor.formatOnPaste": false,
+		"editor.formatOnSave": true,
+		"editor.formatOnType": true,
+		"files.trimTrailingWhitespace": true,
+		"terminal.integrated.shell.linux": "bash",
+	}
+}
