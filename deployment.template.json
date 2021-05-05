@@ -65,10 +65,15 @@
             "version": "1.0",
             "type": "docker",
             "status": "running",
-            "restartPolicy": "always",
+            "restartPolicy": "never",
             "settings": {
               "image": "${MODULES.filterModule}",
               "createOptions": {}
+            },
+            "env": {
+              "TEMP_THRESHOLD_PROPERTY_NAME": {
+                "value": "temperature_threshold"
+              }
             }
           }
         }
