@@ -6,15 +6,16 @@ import time
 import logging
 import ast
 import asyncio
+import os
 
 # pylint: disable=E0611
 from six.moves import input
 from azure.iot.device.aio import IoTHubModuleClient
 from azure.iot.device import MethodResponse
 
-TEMP_THRESHOLD_PROPERTY_NAME = "temperature_threshold"
-TEMP_THRESHOLD_VERSION_NAME = "temperature_threshold_version"
-TEMP_THRESHOLD_STATUS_NAME = "temperature_threshold_status"
+TEMP_THRESHOLD_PROPERTY_NAME = os.environ.get("TEMP_THRESHOLD_PROPERTY_NAME")
+TEMP_THRESHOLD_VERSION_NAME = TEMP_THRESHOLD_PROPERTY_NAME + "_version"
+TEMP_THRESHOLD_STATUS_NAME = TEMP_THRESHOLD_PROPERTY_NAME + "_status"
 DESIRED_PROPERTY_KEY = "desired"
 
 logger = logging.getLogger(__name__)
@@ -29,22 +30,13 @@ class FilterModule(IoTHubModuleClient):
     def __init__(self, mqtt_pipeline, http_pipeline):
         """Initialize the filtermodule, this is based on the IoTHubModuleClient."""
         super().__init__(mqtt_pipeline=mqtt_pipeline, http_pipeline=http_pipeline)
-        self.temperature_threshold = 25
+        self.temperature_threshold = 0
         self.temperature_threshold_version = None
         self.shutdown_flag = False
 
-        async def inline_message_router(message):
-            await self.message_router(message)
-
-        async def inline_twin_patch_handler(patch):
-            await self.twin_patch_handler(patch)
-
-        async def inline_method_request_router(method_request):
-            await self.method_request_router(method_request)
-
-        self.on_message_received = inline_message_router
-        self.on_twin_desired_properties_patch_received = inline_twin_patch_handler
-        self.on_method_request_received = inline_method_request_router
+        self.on_message_received = self.message_router
+        self.on_twin_desired_properties_patch_received = self.twin_patch_handler
+        self.on_method_request_received = self.method_request_router
 
     async def async_run(self):
         """Does all the startup work and doesn't stop.
@@ -88,8 +80,6 @@ class FilterModule(IoTHubModuleClient):
         message_data = ast.literal_eval(dict_str)
         if self.filter_temperature(message_data):
             await self.send_message_to_output(message, "output1")
-        # else:
-        #     await self.send_message_to_output(message, "output2")
 
     def filter_temperature(self, message_data):
         """Returns true or false if the temperature field is above or below the threshold."""

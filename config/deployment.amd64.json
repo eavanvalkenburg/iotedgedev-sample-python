@@ -44,10 +44,15 @@
             "version": "1.0",
             "type": "docker",
             "status": "running",
-            "restartPolicy": "always",
+            "restartPolicy": "on-failure",
             "settings": {
               "image": "localhost:5000/filtermodule:0.0.1-amd64",
               "createOptions": "{}"
+            },
+            "env": {
+              "TEMP_THRESHOLD_PROPERTY_NAME": {
+                "value": "temperature_threshold"
+              }
             }
           }
         }
@@ -63,6 +68,11 @@
         "storeAndForwardConfiguration": {
           "timeToLiveSecs": 7200
         }
+      }
+    },
+    "filterModule": {
+      "properties.desired": {
+        "temperature_threshold": 21
       }
     }
   }

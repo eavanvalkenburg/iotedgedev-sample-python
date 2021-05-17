@@ -35,5 +35,6 @@
 		"editor.formatOnType": true,
 		"files.trimTrailingWhitespace": true,
 		"terminal.integrated.shell.linux": "bash",
-	}
+	},
+	"postCreateCommand": "pip3 install --upgrade pylint black pytest iotedgehubdev",
 }
