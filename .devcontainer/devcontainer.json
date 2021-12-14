@@ -1,40 +1,35 @@
-// For format details, see https://aka.ms/vscode-remote/devcontainer.json
+// For format details, see https://aka.ms/devcontainer.json. For config options, see the README at:
+// https://github.com/microsoft/vscode-dev-containers/tree/v0.140.1/containers/dotnetcore
 {
-	"name": "IoT Edge Dev",
-	"image": "mcr.microsoft.com/iotedge/iotedgedev:latest",
+	"name": "iotedgedev",
+	"build": {
+		"dockerfile": "Dockerfile",
+		"context": "..",
+	},
+	"runArgs": [
+		"--network",
+		"host"
+	],
+	"postCreateCommand": "pip install -e .",
+	"mounts": [
+		// Keep command history
+		"source=ostf-bashhistory,target=/commandhistory,type=volume",
+		// Use hosts docker socket
+		"source=/var/run/docker.sock,target=/var/run/docker.sock,type=bind",
+	],
+	// Set *default* container specific settings.json values on container create.
+	"settings": {
+		"#terminal.integrated.defaultProfile.linux#": "/bin/bash",
+	},
+	// Add the IDs of extensions you want installed when the container is created.
 	"extensions": [
+		"ms-python.python",
 		"ms-azuretools.vscode-docker",
 		"vsciot-vscode.azure-iot-edge",
-		"vsciot-vscode.azure-iot-toolkit",
-		"ms-vscode.azurecli",
-		"ms-python.python",
-		"ms-python.vscode-pylance"
-	],
-	"mounts": [
-		"source=/var/run/docker.sock,target=/var/run/docker.sock,type=bind"
-	],
-	"workspaceMount": "source=${localWorkspaceFolder},target=/home/iotedge,type=bind,consistency=cached",
-	"workspaceFolder": "/home/iotedge",
-	"settings": {
-		"remote.extensionKind": {
-			"ms-azuretools.vscode-docker": "workspace",
-			"vsciot-vscode.azure-iot-edge": "workspace",
-			"vsciot-vscode.azure-iot-toolkit": "workspace",
-			"ms-vscode.azurecli": "workspace",
-			"ms-python.python": "workspace",
-			"ms-python.vscode-pylance": "workspace"
-		},
-		"python.linting.pylintEnabled": true,
-		"python.linting.enabled": true,
-		"python.formatting.provider": "black",
-		"python.testing.pytestArgs": [
-			"--no-cov"
-		],
-		"editor.formatOnPaste": false,
-		"editor.formatOnSave": true,
-		"editor.formatOnType": true,
-		"files.trimTrailingWhitespace": true,
-		"terminal.integrated.shell.linux": "bash",
-	},
-	"postCreateCommand": "pip3 install --upgrade pylint black pytest iotedgehubdev",
+		"redhat.vscode-yaml",
+		"mikestead.dotenv",
+		"streetsidesoftware.code-spell-checker",
+		"yzhang.markdown-all-in-one",
+		"davidanson.vscode-markdownlint"
+	]
 }
