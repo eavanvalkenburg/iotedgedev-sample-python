@@ -8,8 +8,6 @@ import ast
 import asyncio
 import os
 
-# pylint: disable=E0611
-from six.moves import input
 from azure.iot.device.aio import IoTHubModuleClient
 from azure.iot.device import MethodResponse
 
